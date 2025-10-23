@@ -8,13 +8,14 @@ import Login from "./pages/login/login";
 import AddUser from "./pages/admin/screens/UserMaster/UserAdd";
 import AddSite from "./pages/admin/screens/Sites/addSite";
 import ProjectDetails from "./pages/project/screens/ProjectDetails";
-import SiteMaster from "./pages/admin/screens/Sites/SiteMaster";
+import SiteMaster from "./pages/admin/screens/Sites/siteMaster";
 import ProjectCard from "./components/ProjectCard";
 import Roles from "./pages/admin/screens/Roles/roles";
 import Authorization from "./pages/admin/screens/Authorization/Authorization";
 import UserMaster from "./pages/admin/screens/UserMaster/UserMaster";
 import Project from "././pages/project/project"
-import Master from "./pages/master/master";
+import Master from "./pages/master/master";//included master page
+import BoqMaster from "./pages/master/screens/BOQMaster/BoqMaster";//added to use boqmaster
 
 const AppRoutes = () => {
   return (
@@ -36,8 +37,11 @@ const AppRoutes = () => {
           <Route path="*" element={<NotFound />} />
         </Route>
 
-       <Route path="master" element={<Master/>}>
-          {/* <Route path="approvals" element={<ProjectCard />} /> */}
+       <Route path="master" element={<Master/>}>//master page route
+         
+          <Route path="boq-master" element={<BoqMaster />} /> 
+         
+          <Route path="*" element={<NotFound />} /> 
           
         </Route>
 
