@@ -6,7 +6,10 @@ import { Outlet } from "react-router-dom";
 function Master() {
    const items = [
       { label: "Master Data", href: "/master" },
-      // 
+      // { label: "Project Master", href: "/master/project-master" },
+      // { label: "BOQ Master", href: "/master/boq-master" },
+      // { label: "Purchase Master", href: "/master/purchase-master" },
+      // { label: "Petty CashMaster", href: "/master/petty-cashmaster" },
    ];
    const handleBackRoute = () => {
       console.log("Going back...");
