@@ -14,6 +14,7 @@ import Roles from "./pages/admin/screens/Roles/roles";
 import Authorization from "./pages/admin/screens/Authorization/Authorization";
 import UserMaster from "./pages/admin/screens/UserMaster/UserMaster";
 import Project from "././pages/project/project"
+import Master from "./pages/master/master";
 
 const AppRoutes = () => {
   return (
@@ -33,6 +34,11 @@ const AppRoutes = () => {
           <Route path="site" element={<SiteMaster />} />
           <Route path="add-site" element={<AddSite />} />
           <Route path="*" element={<NotFound />} />
+        </Route>
+
+       <Route path="master" element={<Master/>}>
+          {/* <Route path="approvals" element={<ProjectCard />} /> */}
+          
         </Route>
 
         <Route path="admin" element={<Admin />} />
