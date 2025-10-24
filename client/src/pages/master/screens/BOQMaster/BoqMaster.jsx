@@ -67,7 +67,7 @@ const BoqMaster = () => {
       {
          name: 'Actions',
          cell: (row) => (
-            <div className="flex gap-2">
+            <div className="flex gap-4">
 
                <button className="text-black-600 hover:text-black-800">
                   <SquarePen size={18} />
@@ -87,6 +87,7 @@ const BoqMaster = () => {
 
       <div className="p-4">
          <div className='flex justify-end mb-4'>
+            {/* create boq master */}
             <ButtonComponent
                title="Create BOQ Master"
                icon={IoMdAdd}
@@ -94,12 +95,12 @@ const BoqMaster = () => {
                onClick={handleCreateBoq}
             ></ButtonComponent>
          </div>
-
+         {/* table component */}
          <CustomTable
             columns={columns}
             data={data}
          />
-         {/* Add the Modal */}
+         
          <ReusableModal
             isOpen={isModalOpen} // Control visibility with state
             onClose={() => setIsModalOpen(false)}
