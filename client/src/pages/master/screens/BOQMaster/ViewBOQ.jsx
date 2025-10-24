@@ -20,7 +20,7 @@ const ViewBOQ = () => {
 
   
   return (
-   <div className="pt-0 px-4 pb-4 bg-white rounded-lg shadow-sm m-4">
+   <div className="pt-0 px-4 pb-4 ">
 
       {/* --- Section for Title and Buttons (On the same line) --- */}
       <div className="flex justify-between items-center mt-4 mb-4 flex-wrap gap-2">
