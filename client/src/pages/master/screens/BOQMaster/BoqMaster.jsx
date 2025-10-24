@@ -6,6 +6,7 @@ import CustomTable from '../../../../components/CustomTable';
 import InputField from '../../../../components/InputField';
 import CustomModal from '../../../../components/CustomModal';
 // import { SortAsc } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const checkboxCategories = {
    Factory: ['Factory 1', 'Factory 2', 'Factory 3', 'Factory 4'],
@@ -17,6 +18,7 @@ const BoqMaster = () => {
    const [isModalOpen, setIsModalOpen] = useState(false);
    const [boqName, setBoqName] = useState('');
    const [selectedCheckboxes, setSelectedCheckboxes] = useState({});
+   const navigate = useNavigate();
    const [data, setData] = useState([
 
       {
@@ -57,18 +59,14 @@ const BoqMaster = () => {
          [name]: checked, // Update the status for the specific checkbox 
       }));
    };
-     const handleGenerateSheet = () => {
-      console.log("Generating BOQ Sheet with:", { boqName, selected: selectedCheckboxes });
-      
-      // We don't use checkbox data for generation, as per your request.
-      // We'll create a placeholder ID based on the name for navigation.
-      const newBoqId = boqName.trim().replace(/\s+/g, '-') || `temp-id-${Date.now()}`;
-
-      setIsModalOpen(false); // Close the creation modal
-      
-      // Navigate to the new ViewBOQ page with the ID/name
-      navigate(`/master/boq-master/view/${newBoqId}`); 
+   const handleGenerateBoq = () => {
+      setIsModalOpen(false); // Close the modal
+      // Pass selected filters or BOQ name if needed, e.g., via state or query params
+      console.log("Selected Checkboxes for filtering:", selectedCheckboxes);
+      console.log("BOQ Name:", boqName);
+      navigate('/master/boq-master/view');
    };
+  
 
 
    const columns = [
@@ -178,7 +176,7 @@ const BoqMaster = () => {
                <div className="flex justify-center pt-4">
                   <ButtonComponent
                      title="Generate BOQ Sheet"
-                      onClick={handleGenerateSheet} 
+                      onClick={handleGenerateBoq} 
                   // Add onClick later
                   />
                </div>

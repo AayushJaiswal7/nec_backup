@@ -41,7 +41,7 @@ const AppRoutes = () => {
        <Route path="master" element={<Master/>}>//master page route
          
           <Route path="boq-master" element={<BoqMaster />} /> 
-          <Route path="boq-master/view/:boqId" element={<ViewBOQ />} />
+          <Route path="boq-master/view" element={<ViewBOQ />} />
           <Route path="*" element={<NotFound />} /> 
           
         </Route>

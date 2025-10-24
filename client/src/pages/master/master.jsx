@@ -1,5 +1,4 @@
 import Breadcrumb from "../../components/BreadCrumb";
-
 import { PillTabs } from "../../components/Tab";
 import { Outlet } from "react-router-dom";
 
