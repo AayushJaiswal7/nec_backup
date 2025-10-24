@@ -44,13 +44,13 @@ const ViewBOQ = () => {
            />
         </div>
       </div>
+      
       <div
         className="dragscroll mt-6 overflow-auto border border-gray-200 rounded-md max-h-[calc(100vh-280px)] cursor-grab
         " 
       >
-        <table className="w-full min-w-[1900px] border-collapse text-sm"> {/* Adjusted min-w slightly */}
-          <thead className="sticky top-0 bg-[#FFF9F6] z-10"> {/* Changed background slightly */}
-            {/* Top Header Row */}
+        <table className="w-full min-w-[1900px] border-collapse text-sm"> 
+          <thead className="sticky top-0 bg-[#FFF9F6] z-10"> 
             <tr className="border-b border-gray-300">
               <th rowSpan={2} className="p-2 border-r border-l border-gray-300 text-left font-semibold text-sm w-16">S NO</th>
               <th rowSpan={2} className="p-2 border-r border-gray-300 text-left font-semibold text-sm w-32">Item Code</th>
