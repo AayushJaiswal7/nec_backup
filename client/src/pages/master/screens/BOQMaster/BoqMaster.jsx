@@ -57,6 +57,19 @@ const BoqMaster = () => {
          [name]: checked, // Update the status for the specific checkbox 
       }));
    };
+     const handleGenerateSheet = () => {
+      console.log("Generating BOQ Sheet with:", { boqName, selected: selectedCheckboxes });
+      
+      // We don't use checkbox data for generation, as per your request.
+      // We'll create a placeholder ID based on the name for navigation.
+      const newBoqId = boqName.trim().replace(/\s+/g, '-') || `temp-id-${Date.now()}`;
+
+      setIsModalOpen(false); // Close the creation modal
+      
+      // Navigate to the new ViewBOQ page with the ID/name
+      navigate(`/master/boq-master/view/${newBoqId}`); 
+   };
+
 
    const columns = [
       {
@@ -133,6 +146,8 @@ const BoqMaster = () => {
                   placeholder="Enter master BOQ name"
                   name="boqName"
                   className="rounded border-gray-300 accent-primaryColor focus:ring-primaryColor"
+                  value={boqName} // Control the input
+                  onChange={(e) => setBoqName(e.target.value)}
                />
 
                <div className="grid grid-cols-4 gap-x-4 gap-y-3 pt-2">
@@ -163,6 +178,7 @@ const BoqMaster = () => {
                <div className="flex justify-center pt-4">
                   <ButtonComponent
                      title="Generate BOQ Sheet"
+                      onClick={handleGenerateSheet} 
                   // Add onClick later
                   />
                </div>

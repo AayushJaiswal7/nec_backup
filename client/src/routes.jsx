@@ -16,6 +16,7 @@ import UserMaster from "./pages/admin/screens/UserMaster/UserMaster";
 import Project from "././pages/project/project"
 import Master from "./pages/master/master";//included master page
 import BoqMaster from "./pages/master/screens/BOQMaster/BoqMaster";//added to use boqmaster
+import ViewBOQ from "./pages/master/screens/BOQMaster/ViewBOQ";
 
 const AppRoutes = () => {
   return (
@@ -40,7 +41,7 @@ const AppRoutes = () => {
        <Route path="master" element={<Master/>}>//master page route
          
           <Route path="boq-master" element={<BoqMaster />} /> 
-         
+          <Route path="boq-master/view/:boqId" element={<ViewBOQ />} />
           <Route path="*" element={<NotFound />} /> 
           
         </Route>
