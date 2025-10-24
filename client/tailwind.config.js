@@ -22,5 +22,7 @@ export default {
       transform: ['hover'],
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'), // Added plugin for checkbox
+  ],
 }

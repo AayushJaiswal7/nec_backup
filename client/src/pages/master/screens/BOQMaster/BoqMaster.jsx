@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoMdAdd } from "react-icons/io";
 import { SquarePen, Trash2 } from 'lucide-react';
 import ButtonComponent from '../../../../components/ButtonComponent';
 import CustomTable from '../../../../components/CustomTable';
-import ReusableModal from '../../../../components/ReusableModal';
 import InputField from '../../../../components/InputField';
+import CustomModal from '../../../../components/CustomModal';
 // import { SortAsc } from 'lucide-react';
+
+const checkboxCategories = {
+   Factory: ['Factory 1', 'Factory 2', 'Factory 3', 'Factory 4'],
+   Office: ['Office 1', 'Office 2', 'Office 3', 'Office 4'],
+   External: ['External 1', 'External 2', 'External 3', 'External 4'],
+   Other: ['Other 1', 'Other 2', 'Other 3', 'Other 4'],
+};
 const BoqMaster = () => {
    const [isModalOpen, setIsModalOpen] = useState(false);
+   const [boqName, setBoqName] = useState('');
+   const [selectedCheckboxes, setSelectedCheckboxes] = useState({});
    const [data, setData] = useState([
 
       {
@@ -36,7 +45,17 @@ const BoqMaster = () => {
    ]);
    const handleCreateBoq = () => {
       //  alert('Create BOQ Master button clicked!'); 
+
+      setBoqName('');
+      setSelectedCheckboxes({});
       setIsModalOpen(true);
+   };
+   const handleCheckboxChange = (event) => {
+      const { name, checked } = event.target; // Get the name and checked status from the checkbox that triggered the event
+      setSelectedCheckboxes(prevState => ({ // Update the selectedCheckboxes state
+         ...prevState, // Keep all existing checked statuses
+         [name]: checked, // Update the status for the specific checkbox 
+      }));
    };
 
    const columns = [
@@ -100,72 +119,43 @@ const BoqMaster = () => {
             columns={columns}
             data={data}
          />
-         
-         <ReusableModal
-            isOpen={isModalOpen} // Control visibility with state
-            onClose={() => setIsModalOpen(false)}
-            title=""
-         ><div className="space-y-6">
 
+         <CustomModal
+            show={isModalOpen}
+            onHide={() => setIsModalOpen(false)}
+            size="lg" // <-- Add this prop to control width ('md', 'lg', 'xl')
+            footer
+         >
+            <div className="space-y-6">
                {/* BOQ Name Input */}
                <InputField
                   label="BOQ Name"
                   placeholder="Enter master BOQ name"
                   name="boqName"
-
+                  className="rounded border-gray-300 accent-primaryColor focus:ring-primaryColor"
                />
 
-               {/* Checkbox Grid */}
-               <div className="flex space-x-6"> 
+               <div className="grid grid-cols-4 gap-x-4 gap-y-3 pt-2">
 
-                  {/* Column 1: Factory */}
-                  <div className="flex flex-col space-y-3"> 
-                     <label className="flex items-center space-x-2 text-sm">
-                        <input type="checkbox" className="rounded border-gray-300" />
-                        <span>Factory</span>
-                     </label>
-                     <label className="flex items-center space-x-2 text-sm">
-                        <input type="checkbox" className="rounded border-gray-300" />
-                        <span>Factory 1</span>
-                     </label>
-                     {/* ... Factory 2, 3, 4 ... */}
-                  </div>
-
-                  {/* Column 2: Office */}
-                  <div className="flex flex-col space-y-3">
-                     <label className="flex items-center space-x-2 text-sm">
-                        <input type="checkbox" className="rounded border-gray-300" />
-                        <span>Office</span>
-                     </label>
-                     <label className="flex items-center space-x-2 text-sm">
-                        <input type="checkbox" className="rounded border-gray-300" />
-                        <span>Office 1</span>
-                     </label>
-                     
-                  </div>
-                  <div className="flex flex-col space-y-3">
-                     <label className="flex items-center space-x-2 text-sm">
-                        <input type="checkbox" className="rounded border-gray-300" />
-                        <span>External</span>
-                     </label>
-                     <label className="flex items-center space-x-2 text-sm">
-                        <input type="checkbox" className="rounded border-gray-300" />
-                        <span>External 1</span>
-                     </label>
-                     
-                  </div>
-                  <div className="flex flex-col space-y-3">
-                     <label className="flex items-center space-x-2 text-sm">
-                        <input type="checkbox" className="rounded border-gray-300" />
-                        <span>Other</span>
-                     </label>
-                     <label className="flex items-center space-x-2 text-sm">
-                        <input type="checkbox" className="rounded border-gray-300" />
-                        <span>Other 1</span>
-                     </label>
-                     
-                  </div>
-                 
+                  {/* Map over categories, then items, rendering each directly into the grid */}
+                  {Object.entries(checkboxCategories).flatMap(([category, items]) => (
+                     items.map((item) => (
+                        <label key={`${category}-${item}`} className="flex items-center space-x-2 text-sm cursor-pointer hover:bg-gray-50 p-1 rounded transition-colors duration-150">
+                           <input
+                              type="checkbox"
+                              name={`${category}-${item}`} // Unique name for state
+                              checked={!!selectedCheckboxes[`${category}-${item}`]} // Control based on state
+                              onChange={handleCheckboxChange} // Handler to update state
+                              className="
+                      h-4 w-4 rounded border-gray-300
+                      text-primaryColor focus:ring-primaryColor focus:ring-offset-0
+                      checked:border-primaryColor
+                    "
+                           />
+                           <span>{item}</span> {/* e.g., "Factory 1" */}
+                        </label>
+                     ))
+                  ))}
 
                </div>
 
@@ -176,10 +166,8 @@ const BoqMaster = () => {
                   // Add onClick later
                   />
                </div>
-
             </div>
-
-         </ReusableModal>
+         </CustomModal>
       </div>
    );
 };
