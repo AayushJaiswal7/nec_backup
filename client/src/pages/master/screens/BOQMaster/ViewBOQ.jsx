@@ -1,53 +1,60 @@
 // client/src/pages/master/screens/BOQMaster/ViewBOQ.jsx
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, Outlet } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import SecondaryButton from '../../../../components/SecondaryButton'; //Reusable Secondary Button
 import { Upload, Download } from 'lucide-react'; // Icons for buttons
 import DataTable from '../../../../components/DataTable';
+import { PillTabs } from '../../../../components/Tab';
 
 const createSafePrefix = (name) => {
-    if (!name || typeof name !== 'string') {
-        return `invalid_name_${Math.random().toString(36).substring(2, 8)}`; // Fallback for safety
-    }
-    return name
-        .toLowerCase()              // Convert to lowercase
-        .replace(/[^a-z0-9_]+/g, '_') // Replace invalid characters (non-alphanumeric, non-underscore) with underscore
-        .replace(/^_+|_+$/g, '');     // Remove leading/trailing underscores
+  if (!name || typeof name !== 'string') {
+    return `invalid_name_${Math.random().toString(36).substring(2, 8)}`; // Fallback for safety
+  }
+  return name
+    .toLowerCase()              // Convert to lowercase
+    .replace(/[^a-z0-9_]+/g, '_') // Replace invalid characters (non-alphanumeric, non-underscore) with underscore
+    .replace(/^_+|_+$/g, '');     // Remove leading/trailing underscores
 };
 
 const ViewBOQ = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [activeBoqCategory, setActiveBoqCategory] = useState('civil');
   //table column
   const { boqName = "Default BOQ Title", selectedItems = ["Factory 1", "Office 3"] } = location.state || {};
 
+  const boqCategoryTabs = [
+    { label: "Civil", value: "civil" },
+    { label: "Mechanical", value: "mechanical" },
+    { label: "Electrical", value: "electrical" },
+  ];
   const fixedStartColumns = useMemo(() => [
     { header: 'S NO', dataKey: 's_no', width: 'w-16', editable: true },
     { header: 'Item Code', dataKey: 'item_code', width: 'w-32', editable: true },
     { header: 'Item Description', dataKey: 'item_description', minWidth: 'min-w-[250px]', editable: false }, // Not editable
     { header: 'Item Specification', dataKey: 'item_specification', minWidth: 'min-w-[200px]', editable: true },
     { header: 'UOM', dataKey: 'uom', width: 'w-20', editable: true },
-], []);
+  ], []);
 
-const fixedEndColumns = useMemo(() => [
-  { header: 'Unit', dataKey: 'unit', width: 'w-24', align: 'text-right', editable: true },
+  const fixedEndColumns = useMemo(() => [
+    { header: 'Unit', dataKey: 'unit', width: 'w-24', align: 'text-right', editable: true },
     { header: 'Total QTY', dataKey: 'total_qty', width: 'w-24', align: 'text-right', editable: true },
     { header: 'Rate (Rs)', dataKey: 'rate', width: 'w-28', align: 'text-right', editable: true },
     { header: 'Total Amount (Rs)', dataKey: 'total_amount', width: 'w-32', align: 'text-right', editable: true },
-], []);
+  ], []);
 
 
 
-// --- Generate dynamic column groups based on selectedItems from state ---
+  // --- Generate dynamic column groups based on selectedItems from state ---
   const dynamicColumnGroups = useMemo(() => {
-      return selectedItems.map(itemName => {
-          const prefix = createSafePrefix(itemName); // Use helper function
-          return {
-              header: itemName,        // e.g., "Factory 1"
-              dataKeyPrefix: prefix, // e.g., "factory_1"
-              // editable: true, 
-          };
-      });
+    return selectedItems.map(itemName => {
+      const prefix = createSafePrefix(itemName); // Use helper function
+      return {
+        header: itemName,        // e.g., "Factory 1"
+        dataKeyPrefix: prefix, // e.g., "factory_1"
+        // editable: true, 
+      };
+    });
   }, [selectedItems]);
 
   // Example Row (add more rows as needed)
@@ -77,16 +84,16 @@ const fixedEndColumns = useMemo(() => [
       const newData = [...prevData];
       // Basic type handling attempt: Convert to number if the original was a number
       let updatedValue = newValue;
-       if (typeof originalValue === 'number' && !isNaN(newValue) && newValue !== '') {
-            updatedValue = Number(newValue);
-       } else if (typeof originalValue === 'number' && newValue === '') {
-            updatedValue = null; // Or 0, depending on desired behavior for empty number fields
-       }
-     
+      if (typeof originalValue === 'number' && !isNaN(newValue) && newValue !== '') {
+        updatedValue = Number(newValue);
+      } else if (typeof originalValue === 'number' && newValue === '') {
+        updatedValue = null; // Or 0, depending on desired behavior for empty number fields
+      }
 
-      
+
+
       if (newData[rowIndex]) {
-           newData[rowIndex] = { ...newData[rowIndex], [dataKey]: updatedValue };
+        newData[rowIndex] = { ...newData[rowIndex], [dataKey]: updatedValue };
       }
       console.log(`Updated row ${rowIndex}, key ${dataKey} to:`, updatedValue);
       return newData;
@@ -101,38 +108,38 @@ const fixedEndColumns = useMemo(() => [
     console.log("Import button clicked.");
     alert('Import functionality to be implemented.');
   };
-  
+
 
 
   return (
-   <div className="pt-0 px-4 pb-4 w-full">
-  {/* --- Section for Title and Buttons (Responsive) --- */}
-  <div className="flex flex-wrap items-center justify-between gap-3 mt-4 mb-4 min-w-0">
-    {/* Title */}
-    <h2 className="text-lg sm:text-xl font-semibold text-gray-800 truncate max-w-[70%] min-w-0 sm:max-w-[60%] md:max-w-[50%]">
-      {boqName}
-    </h2>
+    <div className="pt-0 px-4 pb-4 w-full">
+      {/* --- Section for Title and Buttons (Responsive) --- */}
+      <div className="flex flex-wrap items-center justify-between gap-3 mt-4 mb-4 min-w-0">
+        {/* Title */}
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-800 truncate max-w-[70%] min-w-0 sm:max-w-[60%] md:max-w-[50%]">
+          {boqName}
+        </h2>
 
-    {/* Buttons */}
-    <div className="flex flex-wrap gap-2 justify-end">
-      <SecondaryButton
-        text="Import as CSV"
-        icon={Upload}
-        onClick={handleImport}
-        className="border-gray-300 hover:bg-gray-50 whitespace-nowrap"
-      />
-      <SecondaryButton
-        text="Export to CSV"
-        icon={Download}
-        onClick={handleExport}
-        className="border-gray-300 hover:bg-gray-50 whitespace-nowrap"
-      />
-    </div>
-  </div>
+        {/* Buttons */}
+        <div className="flex flex-wrap gap-2 justify-end">
+          <SecondaryButton
+            text="Import as CSV"
+            icon={Upload}
+            onClick={handleImport}
+            className="border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+          />
+          <SecondaryButton
+            text="Export to CSV"
+            icon={Download}
+            onClick={handleExport}
+            className="border-gray-300 hover:bg-gray-50 whitespace-nowrap"
+          />
+        </div>
+      </div>
 
-  {/* --- Table Container --- */}
-  <div
-    className="
+      {/* --- Table Container --- */}
+      <div
+        className="
       w-full 
       lg:w-[90%] 
       xl:w-[85%] 
@@ -147,19 +154,32 @@ const fixedEndColumns = useMemo(() => [
       min-w-0 
       flex-1
       "
-  >
-    <DataTable
-      fixedStartColumns={fixedStartColumns}
-      dynamicColumnGroups={dynamicColumnGroups}
-      fixedEndColumns={fixedEndColumns}
-      data={boqData}
-      rowKeyField="s_no"
-      onCellChange={handleCellUpdate}
-      tableClassName="w-full border-collapse text-sm  table-auto"
-      noDataMessage="No BOQ data to display."
-    />
-  </div>
-</div>
+      >
+        <DataTable
+          fixedStartColumns={fixedStartColumns}
+          dynamicColumnGroups={dynamicColumnGroups}
+          fixedEndColumns={fixedEndColumns}
+          data={boqData}
+          rowKeyField="s_no"
+          onCellChange={handleCellUpdate}
+          tableClassName="w-full border-collapse text-sm  table-auto"
+          noDataMessage="No BOQ data to display."
+        />
+      </div>
+
+      <div className="mt-80 bg-white p-1 rounded-lg border border-gray-200 shadow-sm"> {/* Optional: Add some margin above the tabs */}
+        <PillTabs
+          items={boqCategoryTabs} // Defined earlier in the component
+          // value={activeCategory} // Your state variable
+          // onValueChange={setActiveCategory} // Your state setter
+        />
+
+         {/* Content for the selected tab will render here if using routing */}
+      {/* <Outlet /> */}
+      </div>
+
+     
+    </div>
 
 
   );
