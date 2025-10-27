@@ -29,4 +29,53 @@ input[type="checkbox"]:checked {
 /* Style the SVG checkmark itself (using Tailwind's primaryColor) */
 input[type="checkbox"].text-primaryColor:checked {
     background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23FF7F42' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+}#boq-fixed-tabs-wrapper {
+  background-color: white; /* Ensure wrapper background is white */
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.05); /* Optional subtle top shadow */
+  border-top: 1px solid #E5E7EB; /* Optional subtle top border (adjust color if needed) */
+}
+
+/* 1. Target the TabsList and force white background, add bottom border */
+/* Selector targets the div containing the buttons inside PillTabs */
+#boq-fixed-tabs-wrapper > div > div:first-child {
+  background-color: white !important; /* Force white background */
+  border-bottom: 1px solid #E5E7EB !important; /* Add gray bottom border (border-gray-200) */
+  border-top: none !important; /* Remove original top border if any */
+  border-left: none !important; /* Remove original left border if any */
+  border-right: none !important; /* Remove original right border if any */
+  padding-bottom: 0 !important; /* Prevent extra space below tabs */
+  /* Ensure it fills the wrapper width */
+  width: 100%;
+}
+
+/* 2. Hide the original ::after pseudo-element (the overline) */
+#boq-fixed-tabs-wrapper button[class*="-mb-px"]::after {
+  display: none !important;
+}
+
+/* 3. Style the ACTIVE tab button for the underline effect */
+#boq-fixed-tabs-wrapper button[class*="-mb-px"] {
+  border: none !important; /* Remove ALL original borders */
+  border-bottom: 3px solid #FF7F42 !important; /* Add primaryColor underline */
+  margin-bottom: -1px !important; /* Overlap the TabsList's gray bottom border */
+  background-color: white !important; /* Ensure active tab background is white */
+  color: #1F2937 !important; /* Set active text color (e.g., text-gray-800) */
+  box-shadow: none !important; /* Remove original shadow if any */
+  border-radius: 0 !important; /* Remove top rounding if underline looks better flat */
+  /* Adjust padding if needed to align text nicely */
+   /* padding-bottom: calc(0.5rem - 1px); */ /* Example: py-2 original padding minus border overlap */
+}
+
+/* 4. Style INACTIVE tabs */
+#boq-fixed-tabs-wrapper button:not([class*="-mb-px"]) {
+  border-color: transparent !important; /* Ensure no borders */
+  color: #4B5563 !important; /* Set inactive text color (e.g., text-gray-600) */
+  background-color: transparent !important; /* Ensure inactive background is transparent */
+   border-radius: 0 !important; /* Match active tab */
+
+}
+/* Optional: Style inactive tab hover state */
+#boq-fixed-tabs-wrapper button:not([class*="-mb-px"]):hover {
+   color: #1F2937 !important; /* Hover text color (e.g., text-gray-800) */
+   background-color: #F3F4F6 !important; /* Optional: Slight gray background on hover */
 }

@@ -19,14 +19,14 @@ const createSafePrefix = (name) => {
 const ViewBOQ = () => {
   const navigate = useNavigate();
   const location = useLocation();
-const [activeBoqCategory, setActiveBoqCategory] = useState('civil');
+  const [activeBoqCategory, setActiveBoqCategory] = useState('civil');
   const { boqName = "Default BOQ Title", selectedItems = ["Factory 1", "Office 3"] } = location.state || {};
 
   const boqCategoryTabs = useMemo(() => [
     { label: "Civil", value: "civil" },
     { label: "Mechanical", value: "mechanical" },
     { label: "Electrical", value: "electrical" },
-], []);
+  ], []);
   const fixedStartColumns = useMemo(() => [
     { header: 'S NO', dataKey: 's_no', width: 'w-16', editable: true },
     { header: 'Item Code', dataKey: 'item_code', width: 'w-32', editable: true },
@@ -165,24 +165,24 @@ const [activeBoqCategory, setActiveBoqCategory] = useState('civil');
           noDataMessage="No BOQ data to display."
         />
       </div>
-<div className="fixed bottom-0 left-20 right-0 z-10 bg-secondaryColor border-t border-orange-100 shadow-sm px-3 pt-2">
-                
-                <PillTabs
-                    items={boqCategoryTabs}
-                    // defaultValue="civil" // Set a default if needed
-                    
-                    basePath="" // Set to empty if paths aren't relevant here
-                />
-                 
-                 <div className="h-px bg-white border-b border-orange-200"></div>
-            </div>
+      <div
+        id="boq-fixed-tabs-wrapper" /* ID for CSS targeting */
+        className="fixed bottom-0 left-20 right-0 z-10" /* Positioning classes */
+      >
+        {/* PillTabs renders inside the fixed wrapper */}
+        <PillTabs
+          items={boqCategoryTabs}
+          basePath="" // Adjust if these tabs relate to sub-paths
+        />
+      </div>
+    </div>
 
-           
-        </div>
 
-    
-     
-    
+
+
+
+
+
 
 
   );
