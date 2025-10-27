@@ -5,38 +5,50 @@ import SecondaryButton from '../../../../components/SecondaryButton'; //Reusable
 import { Upload, Download } from 'lucide-react'; // Icons for buttons
 import DataTable from '../../../../components/DataTable';
 
+const createSafePrefix = (name) => {
+    if (!name || typeof name !== 'string') {
+        return `invalid_name_${Math.random().toString(36).substring(2, 8)}`; // Fallback for safety
+    }
+    return name
+        .toLowerCase()              // Convert to lowercase
+        .replace(/[^a-z0-9_]+/g, '_') // Replace invalid characters (non-alphanumeric, non-underscore) with underscore
+        .replace(/^_+|_+$/g, '');     // Remove leading/trailing underscores
+};
+
 const ViewBOQ = () => {
   const navigate = useNavigate();
   const location = useLocation();
   //table column
-  const { boqName = "Master BOQ - Residential Apartment Construction", selectedCategories = ['Factory', 'Office', 'Other/Utilities', 'External'] } = location.state || {}
+  const { boqName = "Default BOQ Title", selectedItems = ["Factory 1", "Office 3"] } = location.state || {};
 
-  const allColumns = useMemo(() => [
+  const fixedStartColumns = useMemo(() => [
     { header: 'S NO', dataKey: 's_no', width: 'w-16', editable: true },
     { header: 'Item Code', dataKey: 'item_code', width: 'w-32', editable: true },
     { header: 'Item Description', dataKey: 'item_description', minWidth: 'min-w-[250px]', editable: false }, // Not editable
     { header: 'Item Specification', dataKey: 'item_specification', minWidth: 'min-w-[200px]', editable: true },
     { header: 'UOM', dataKey: 'uom', width: 'w-20', editable: true },
-    // --- Dynamic Category Columns ---
-    // Parent Group Column Definition (used for header rendering)
-    { header: 'Factory', dataKey: 'factory', visible: selectedCategories.includes('Factory'), isGroup: true, headerProps: { colSpan: 2 }, headerAlign: 'text-center' },
-    { header: 'QTY', dataKey: 'factory_qty', width: 'w-20', align: 'text-right', editable: true, parent: 'Factory', visible: selectedCategories.includes('Factory') },
-    { header: 'Amount', dataKey: 'factory_amount', width: 'w-24', align: 'text-right', editable: true, parent: 'Factory', visible: selectedCategories.includes('Factory') },
-    { header: 'Office', dataKey: 'office', visible: selectedCategories.includes('Office'), isGroup: true, headerProps: { colSpan: 2 }, headerAlign: 'text-center' },
-    { header: 'QTY', dataKey: 'office_qty', width: 'w-20', align: 'text-right', editable: true, parent: 'Office', visible: selectedCategories.includes('Office') },
-    { header: 'Amount', dataKey: 'office_amount', width: 'w-24', align: 'text-right', editable: true, parent: 'Office', visible: selectedCategories.includes('Office') },
-    { header: 'Other/Utilities', dataKey: 'other', visible: selectedCategories.includes('Other/Utilities'), isGroup: true, headerProps: { colSpan: 2 }, headerAlign: 'text-center' },
-    { header: 'QTY', dataKey: 'other_qty', width: 'w-20', align: 'text-right', editable: true, parent: 'Other/Utilities', visible: selectedCategories.includes('Other/Utilities') },
-    { header: 'Amount', dataKey: 'other_amount', width: 'w-24', align: 'text-right', editable: true, parent: 'Other/Utilities', visible: selectedCategories.includes('Other/Utilities') },
-    { header: 'External', dataKey: 'external', visible: selectedCategories.includes('External'), isGroup: true, headerProps: { colSpan: 2 }, headerAlign: 'text-center' },
-    { header: 'QTY', dataKey: 'external_qty', width: 'w-20', align: 'text-right', editable: true, parent: 'External', visible: selectedCategories.includes('External') },
-    { header: 'Amount', dataKey: 'external_amount', width: 'w-24', align: 'text-right', editable: true, parent: 'External', visible: selectedCategories.includes('External') },
-    // --- Fixed Trailing Columns ---
-    { header: 'Unit', dataKey: 'unit', width: 'w-24', align: 'text-right', editable: true },
+], []);
+
+const fixedEndColumns = useMemo(() => [
+  { header: 'Unit', dataKey: 'unit', width: 'w-24', align: 'text-right', editable: true },
     { header: 'Total QTY', dataKey: 'total_qty', width: 'w-24', align: 'text-right', editable: true },
     { header: 'Rate (Rs)', dataKey: 'rate', width: 'w-28', align: 'text-right', editable: true },
     { header: 'Total Amount (Rs)', dataKey: 'total_amount', width: 'w-32', align: 'text-right', editable: true },
-  ], [selectedCategories]);
+], []);
+
+
+
+// --- Generate dynamic column groups based on selectedItems from state ---
+  const dynamicColumnGroups = useMemo(() => {
+      return selectedItems.map(itemName => {
+          const prefix = createSafePrefix(itemName); // Use helper function
+          return {
+              header: itemName,        // e.g., "Factory 1"
+              dataKeyPrefix: prefix, // e.g., "factory_1"
+              // editable: true, 
+          };
+      });
+  }, [selectedItems]);
 
   // Example Row (add more rows as needed)
   const [boqData, setBoqData] = useState([
@@ -64,16 +76,18 @@ const ViewBOQ = () => {
     setBoqData(prevData => {
       const newData = [...prevData];
       // Basic type handling attempt: Convert to number if the original was a number
-      const originalValue = newData[rowIndex][dataKey];
       let updatedValue = newValue;
-      if (typeof originalValue === 'number' && !isNaN(newValue) && newValue !== '') {
-        updatedValue = Number(newValue);
-      } else if (typeof originalValue === 'number' && newValue === '') {
-        updatedValue = null; // Or 0, depending on desired behavior for empty number fields
-      }
+       if (typeof originalValue === 'number' && !isNaN(newValue) && newValue !== '') {
+            updatedValue = Number(newValue);
+       } else if (typeof originalValue === 'number' && newValue === '') {
+            updatedValue = null; // Or 0, depending on desired behavior for empty number fields
+       }
+     
 
-      newData[rowIndex] = { ...newData[rowIndex], [dataKey]: updatedValue };
-      // TODO: Add logic here to recalculate 'total_qty' and 'total_amount' if needed
+      
+      if (newData[rowIndex]) {
+           newData[rowIndex] = { ...newData[rowIndex], [dataKey]: updatedValue };
+      }
       console.log(`Updated row ${rowIndex}, key ${dataKey} to:`, updatedValue);
       return newData;
     });
@@ -88,44 +102,6 @@ const ViewBOQ = () => {
     alert('Import functionality to be implemented.');
   };
   
-  const renderBoqHeader = (visibleColumns) => {//header 
-    const topRow = [];
-    const bottomRow = [];
-    const topLevelVisibleCols = allColumns.filter(col => col.visible !== false && !col.parent);
-
-    topLevelVisibleCols.forEach(col => {
-      const thProps = {
-        key: col.dataKey,
-        colSpan: col.headerProps?.colSpan || 1,
-        rowSpan: col.isGroup ? 1 : 2, 
-        className: `p-2 border-r border-l border-gray-300 font-semibold text-sm sticky top-0 bg-[#FFF9F6] z-10 ${col.headerAlign || col.align || 'text-left'} ${col.width || ''}`,
-      };
-      topRow.push(<th {...thProps}>{col.header}</th>);
-
-      if (col.isGroup) {
-        // Find and add visible children to the bottom row
-        allColumns.filter(child => child.parent === col.header && child.visible !== false).forEach(childCol => {
-          const childThProps = {
-            key: childCol.dataKey,
-            className: `p-2 border-r border-gray-300 font-semibold text-sm sticky top-[41px] bg-[#FFF9F6] z-10 ${childCol.headerAlign || childCol.align || 'text-right'} ${childCol.width || ''}`, // Adjust top value based on actual header height
-          };
-          bottomRow.push(<th {...childThProps}>{childCol.header}</th>);
-        });
-      }
-    });
-
-    return (
-      <>
-        <tr className="border-b border-gray-300">{topRow}</tr>
-        {bottomRow.length > 0 && <tr className="border-b-2 border-gray-400">{bottomRow}</tr>}
-      </>
-    );
-  };
-
-  // Filter columns for data rendering (only leaf nodes that are visible)
-  const visibleLeafColumns = useMemo(() =>
-    allColumns.filter(col => col.visible !== false && !col.isGroup),
-    [allColumns]);
 
 
   return (
@@ -173,11 +149,12 @@ const ViewBOQ = () => {
       "
   >
     <DataTable
-      columns={visibleLeafColumns}
+      fixedStartColumns={fixedStartColumns}
+      dynamicColumnGroups={dynamicColumnGroups}
+      fixedEndColumns={fixedEndColumns}
       data={boqData}
       rowKeyField="s_no"
       onCellChange={handleCellUpdate}
-      renderHeader={renderBoqHeader}
       tableClassName="w-full border-collapse text-sm  table-auto"
       noDataMessage="No BOQ data to display."
     />

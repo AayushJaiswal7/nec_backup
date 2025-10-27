@@ -17,6 +17,7 @@ const checkboxCategories = {
 const BoqMaster = () => {
    const [isModalOpen, setIsModalOpen] = useState(false);
    const [boqName, setBoqName] = useState('');
+   const [boqNameError, setBoqNameError] = useState('');
    const [selectedCheckboxes, setSelectedCheckboxes] = useState({});
    const navigate = useNavigate();
    const [data, setData] = useState([
@@ -50,6 +51,7 @@ const BoqMaster = () => {
 
       setBoqName('');
       setSelectedCheckboxes({});
+      setBoqNameError('');
       setIsModalOpen(true);
    };
    const handleCheckboxChange = (event) => {
@@ -59,15 +61,41 @@ const BoqMaster = () => {
          [name]: checked, // Update the status for the specific checkbox 
       }));
    };
-   const handleGenerateBoq = () => {
-      setIsModalOpen(false); // Close the modal
-      // Pass selected filters or BOQ name if needed, e.g., via state or query params
-      console.log("Selected Checkboxes for filtering:", selectedCheckboxes);
-      console.log("BOQ Name:", boqName);
-      navigate('/master/boq-master/view');
-   };
-  
+   
 
+    const handleGenerateBoq = () => {
+        // 1. Validation: Check if BOQ Name is empty or only whitespace
+        if (!boqName.trim()) {
+            setBoqNameError("BOQ Name is required."); // Set error message state
+            return; 
+        }
+        setBoqNameError(''); 
+
+        // 2. Collect selected item names
+       
+        const selectedItemsArray = Object.keys(selectedCheckboxes)
+            .filter(key => selectedCheckboxes[key]) // Keep only checked keys
+            .map(key => {
+                const parts = key.split('-'); 
+                return parts.length > 1 ? parts.slice(1).join('-') : parts[0];
+            })
+            .filter(name => name); // Ensure the extracted name is not empty
+
+        
+        console.log("Navigating to /master/boq-master/view with state:", {
+             boqName: boqName,
+             selectedItems: selectedItemsArray
+        }); 
+        navigate('/master/boq-master/view', { // Target route
+            state: { // Data to pass
+                boqName: boqName,                 // Pass the entered BOQ name
+                selectedItems: selectedItemsArray // Pass the array of selected item names
+            }
+        });
+
+        // 4. Close Modal
+        setIsModalOpen(false);
+    };
 
    const columns = [
       {
@@ -144,8 +172,10 @@ const BoqMaster = () => {
                   placeholder="Enter master BOQ name"
                   name="boqName"
                   className="rounded border-gray-300 accent-primaryColor focus:ring-primaryColor"
+                  isRequired={true}
                   value={boqName} // Control the input
-                  onChange={(e) => setBoqName(e.target.value)}
+                 onChange={(e) => { setBoqName(e.target.value); if (e.target.value.trim()) setBoqNameError(''); }} // Clear error on change
+                error={boqNameError}
                />
 
                <div className="grid grid-cols-4 gap-x-4 gap-y-3 pt-2">
@@ -185,5 +215,6 @@ const BoqMaster = () => {
       </div>
    );
 };
+
 
 export default BoqMaster; 
