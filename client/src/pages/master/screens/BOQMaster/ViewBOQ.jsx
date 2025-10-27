@@ -19,15 +19,14 @@ const createSafePrefix = (name) => {
 const ViewBOQ = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeBoqCategory, setActiveBoqCategory] = useState('civil');
-  //table column
+const [activeBoqCategory, setActiveBoqCategory] = useState('civil');
   const { boqName = "Default BOQ Title", selectedItems = ["Factory 1", "Office 3"] } = location.state || {};
 
-  const boqCategoryTabs = [
+  const boqCategoryTabs = useMemo(() => [
     { label: "Civil", value: "civil" },
     { label: "Mechanical", value: "mechanical" },
     { label: "Electrical", value: "electrical" },
-  ];
+], []);
   const fixedStartColumns = useMemo(() => [
     { header: 'S NO', dataKey: 's_no', width: 'w-16', editable: true },
     { header: 'Item Code', dataKey: 'item_code', width: 'w-32', editable: true },
@@ -141,7 +140,7 @@ const ViewBOQ = () => {
       <div
         className="
       w-full 
-      lg:w-[90%] 
+      lg:w-[100%] 
       xl:w-[85%] 
       2xl:w-[80%]
       transition-all duration-300 
@@ -166,20 +165,24 @@ const ViewBOQ = () => {
           noDataMessage="No BOQ data to display."
         />
       </div>
+<div className="fixed bottom-0 left-20 right-0 z-10 bg-secondaryColor border-t border-orange-100 shadow-sm px-3 pt-2">
+                
+                <PillTabs
+                    items={boqCategoryTabs}
+                    // defaultValue="civil" // Set a default if needed
+                    
+                    basePath="" // Set to empty if paths aren't relevant here
+                />
+                 
+                 <div className="h-px bg-white border-b border-orange-200"></div>
+            </div>
 
-      <div className="mt-80 bg-white p-1 rounded-lg border border-gray-200 shadow-sm"> {/* Optional: Add some margin above the tabs */}
-        <PillTabs
-          items={boqCategoryTabs} // Defined earlier in the component
-          // value={activeCategory} // Your state variable
-          // onValueChange={setActiveCategory} // Your state setter
-        />
+           
+        </div>
 
-         {/* Content for the selected tab will render here if using routing */}
-      {/* <Outlet /> */}
-      </div>
-
+    
      
-    </div>
+    
 
 
   );

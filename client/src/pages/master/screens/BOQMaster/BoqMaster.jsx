@@ -207,7 +207,7 @@ const BoqMaster = () => {
                   <ButtonComponent
                      title="Generate BOQ Sheet"
                       onClick={handleGenerateBoq} 
-                  // Add onClick later
+                  
                   />
                </div>
             </div>
