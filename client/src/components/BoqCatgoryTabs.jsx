@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 
 /**
- * BoqCategoryTabs Component (Using User's *updated* provided structure and pill styling)
- * Renders tab buttons for BOQ categories.
- *
+ 
  * @param {Array<object>} items - Array of tab objects, e.g., [{ label: "Civil", value: "civil" }]
  * @param {string} activeTab - The value of the currently active tab (e.g., "civil").
  * @param {function} onTabChange - Callback function executed when a tab is clicked, receives the tab's value.
@@ -31,8 +29,8 @@ const BoqCategoryTabs = ({ items = [], activeTab, onTabChange, className = "" })
   }
 
   const handleTabClick = (index, value) => {
-    setInternalActiveIndex(index); // Update internal state for immediate visual feedback
-    onTabChange(value);       // Notify parent component with the *value*
+    setInternalActiveIndex(index); 
+    onTabChange(value);       
   };
 
   return (
@@ -47,16 +45,15 @@ const BoqCategoryTabs = ({ items = [], activeTab, onTabChange, className = "" })
                 <button
                     key={item.value} // Use value for key
                     onClick={() => handleTabClick(index, item.value)}
-                    // Apply conditional styling for pill active state from user example
-                    // Reduced padding from px-12 py-3 to px-6 py-2
-                    className={`px-6 py-2 text-sm font-medium transition-all rounded-3xl relative overflow-hidden ${ // Adjusted text-sm for smaller size
+                  
+                    className={`px-6 py-2 text-sm font-medium transition-all rounded-3xl relative overflow-hidden ${ 
                         isActive
-                        ? 'text-orange-600 bg-white shadow-sm' // Active styles from user example
-                        : 'text-gray-600 hover:text-gray-900' // Inactive styles from user example
+                        ? 'text-orange-600 bg-white shadow-sm' 
+                        : 'text-gray-600 hover:text-gray-900' 
                     }`}
                 >
                     {item.label}
-                    {/* Add the absolute positioned bottom line div for active state */}
+                   
                     {isActive && (
                       <div className="absolute bottom-0 -left-6 -right-6 h-0.5 bg-orange-600 rounded-t-3xl" />
                     )}
@@ -64,7 +61,7 @@ const BoqCategoryTabs = ({ items = [], activeTab, onTabChange, className = "" })
                 );
             })}
         </div>
-        {/* Removed the content rendering div */}
+        
     </div>
   );
 };
