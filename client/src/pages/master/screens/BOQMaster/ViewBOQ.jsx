@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import SecondaryButton from '../../../../components/SecondaryButton'; //Reusable Secondary Button
 import { Upload, Download } from 'lucide-react'; // Icons for buttons
 import DataTable from '../../../../components/DataTable';
-import { PillTabs } from '../../../../components/Tab';
+import BoqCategoryTabs from '../../../../components/BoqCatgoryTabs';
 
 const createSafePrefix = (name) => {
   if (!name || typeof name !== 'string') {
@@ -165,14 +165,13 @@ const ViewBOQ = () => {
           noDataMessage="No BOQ data to display."
         />
       </div>
-      <div
-        id="boq-fixed-tabs-wrapper" /* ID for CSS targeting */
-        className="fixed bottom-0 left-20 right-0 z-10" /* Positioning classes */
+       <div
+        className="fixed bottom-0 left-20 right-0 z-10 shadow-[0_-1px_3px_rgba(0,0,0,0.05)]"
       >
-        {/* PillTabs renders inside the fixed wrapper */}
-        <PillTabs
-          items={boqCategoryTabs}
-          basePath="" // Adjust if these tabs relate to sub-paths
+        <BoqCategoryTabs
+          items={boqCategoryTabs}        // Pass the array of tab objects
+          activeTab={activeBoqCategory}  // Pass the current active tab state
+          onTabChange={setActiveBoqCategory} // Pass the state setter function
         />
       </div>
     </div>
