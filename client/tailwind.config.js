@@ -24,5 +24,6 @@ export default {
   },
   plugins: [
     require('@tailwindcss/forms'), // Added plugin for checkbox
+     require('tailwind-scrollbar'),
   ],
 }

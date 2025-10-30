@@ -216,13 +216,31 @@ const PettyCashRegister = () => {
   const paginatedData = data.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
   return (
-    <div className="space-y-4 px-2 sm:px-4 md:px-6 lg:px-8">
-      <Breadcrumb items={breadcrumbItems} onBackRoute={handleBackRoute} />
-
-     
-     <div className="w-full overflow-x-auto bg-white rounded-lg shadow-sm border border-gray-200">
   
-  <div className="w-full min-w-[480px] sm:min-w-[640px] max-w-full">
+
+<div className="space-y-4 px-2 sm:px-4 md:px-6 lg:px-8 w-full">
+  <Breadcrumb items={breadcrumbItems} onBackRoute={handleBackRoute} />
+
+ <div
+  className="
+    bg-white
+    
+    rounded-lg 
+    shadow-sm 
+    border 
+    border-gray-200 
+    overflow-x-auto 
+    overflow-y-hidden
+    scrollbar-thin 
+    scrollbar-thumb-gray-400 
+    scrollbar-track-gray-100 
+    w-full
+    md:max-w-[95vw]
+  "
+>
+ <div className="min-w-[900px] md:min-w-[1300px] lg:min-w-[1500px]">
+    
+
     <CustomTable
       columns={columns}
       data={paginatedData}
@@ -231,11 +249,15 @@ const PettyCashRegister = () => {
       paginationTotalRows={data.length}
       paginationDefaultPage={currentPage}
       paginationPerPage={rowsPerPage}
-      onChangePage={page => setCurrentPage(page)}
-    />
+      onChangePage={(page) => setCurrentPage(page)}
+      />
+      </div>
   </div>
 </div>
-    </div>
+
+
+
+
   );
 };
 

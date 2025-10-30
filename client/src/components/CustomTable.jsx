@@ -14,10 +14,13 @@ const CustomTable = ({
 }) => {
     const customStyles = {
         tableWrapper: {
-            style: {
-                height: "50vh",
-            },
+            style:
+            {
+                minHeight: "50vh"//height->minHeight
+
+            }
         },
+
         rows: {
             style: {
                 backgroundColor: "#fff",
@@ -42,6 +45,10 @@ const CustomTable = ({
                 fontWeight: 600,
                 paddingLeft: "16px",
                 paddingRight: "16px",
+                //added
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
             },
         },
         cells: {
@@ -50,6 +57,10 @@ const CustomTable = ({
                 fontWeight: 500,
                 paddingLeft: "16px",
                 paddingRight: "16px",
+                //added
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
             },
         },
         pagination: {
@@ -61,9 +72,13 @@ const CustomTable = ({
 
     return (
         // <div className="relative flex flex-col h-[600px] max-h-[1000px]">
-        <div className="relative flex flex-col ">
-            <div className="flex flex-col flex-grow">
-                <div className="flex-grow">
+        <div className="relative flex flex-col text-sm sm:text-[15px] w-full">
+            {/* 👇 critical wrapper for scroll on smaller screens */}
+            <div
+                className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-500 rounded-lg"
+            >
+                <div className="min-w-[768px] lg:min-w-[1024px]">
+                    {/* added div here */}
                     <DataTable
                         columns={columns}
                         data={data}
@@ -85,6 +100,7 @@ const CustomTable = ({
                     />
                 </div>
             </div>
+
 
             {paginationTotalRows > paginationPerPage && (
                 <div className="relative border-t border-gray-300 p-3 bg-white">
