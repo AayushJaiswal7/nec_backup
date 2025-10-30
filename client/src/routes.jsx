@@ -17,7 +17,8 @@ import Project from "././pages/project/project"
 import Master from "./pages/master/master";//included master page
 import BoqMaster from "./pages/master/screens/BOQMaster/BoqMaster";//added to use boqmaster
 import ViewBOQ from "./pages/master/screens/BOQMaster/ViewBOQ";
-
+import PettyCash from "./pages/petty-cash/PettyCash";
+import PettyCashRegister from "./pages/petty-cash/screens/PettyCashRegister";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -45,6 +46,8 @@ const AppRoutes = () => {
           <Route path="*" element={<NotFound />} /> 
           
         </Route>
+        <Route path="petty-cash" element={<PettyCash />} />
+        <Route path="petty-cash/register" element={<PettyCashRegister />} />
 
         <Route path="admin" element={<Admin />} />
         <Route path="*" element={<NotFound />} />
