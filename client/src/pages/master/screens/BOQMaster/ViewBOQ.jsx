@@ -120,7 +120,7 @@ const ViewBOQ = () => {
     </div>
   </div>
 
-  {/* --- Table Wrapper (scrollable on all screens) --- */}
+  
 {/* --- Scrollable Table --- */}
 {/* <div
         className="
