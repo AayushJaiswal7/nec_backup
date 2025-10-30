@@ -253,18 +253,17 @@ const DataTable = ({
     };
 
     return (
-        // Container div's classes are now fully controlled by the parent via containerClassName
-        <div className={containerClassName}>
-            <table className={tableClassName}>
-                <thead className={headerClassName}>
-                    {headerContent}
-                </thead>
-                <tbody>
-                    {renderTableBody()}
-                </tbody>
-            </table>
-        </div>
-    );
+  <div className={`w-full overflow-x-auto ${containerClassName}`}>
+    <table className="min-w-[1200px] border-collapse text-sm">
+      <thead className={headerClassName}>
+        {headerContent}
+      </thead>
+      <tbody>
+        {renderTableBody()}
+      </tbody>
+    </table>
+  </div>
+);
 };
 
 export default DataTable;
