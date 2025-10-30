@@ -18,12 +18,7 @@ const PettyCashRegister = () => {
   const handleBackRoute = () => navigate('/petty-cash');
 
   const columns = [
-    {
-      name: 'S.No',
-      selector: (row, index) => (currentPage - 1) * rowsPerPage + index + 1,
-      width: '80px',
-      sortable: false,
-    },
+   { name: 'Date', selector: row => row.date, sortable: true, width: '120px', },
     { name: 'Cost Code', selector: row => row.costCode, sortable: true, width: '125px' },
     {
       name: 'Cost Code Name',
@@ -53,7 +48,7 @@ const PettyCashRegister = () => {
       name: 'Gross Value',
       selector: row => row.grossValue,
       sortable: true,
-      width: '160px',
+      width: '130px',
       cell: row => {
         const isUp = row.grossValueTrend === 'up';
         const isDown = row.grossValueTrend === 'down';
@@ -80,8 +75,8 @@ const PettyCashRegister = () => {
     {
       name: 'Amount',
       selector: row => row.amount,
-      sortable: true,
-      width: '130px',
+      // sortable: true,
+      width: '100px',
       cell: row => (
         <div className="w-full text-right tabular-nums whitespace-nowrap">
           {row.amount.toLocaleString('en-IN')}
@@ -92,7 +87,7 @@ const PettyCashRegister = () => {
 
   const data = [
     {
-      id: 1,
+      date: '15.05.2025',
       costCode: '001',
       costCodeName: 'Opening Balance',
       description: 'Long Description',
@@ -104,7 +99,7 @@ const PettyCashRegister = () => {
       amount: 183372,
     },
     {
-      id: 2,
+      date: '15.05.2025',
       costCode: '001',
       costCodeName: 'Site Expenses',
       description: 'Long Description',
@@ -116,7 +111,96 @@ const PettyCashRegister = () => {
       amount: 156432,
     },
     {
-      id: 3,
+    date: '15.05.2025',
+      costCode: '002',
+      costCodeName: 'Materials Purchase',
+      description: 'Cement bags',
+      payeeOrPayer: 'Local Supplier',
+      gstNo: 'GSTIN123456789',
+      billNo: 'B-101',
+      grossValue: 50000,
+      grossValueTrend: 'down',
+      amount: 48000,
+    },
+     {
+    date: '15.05.2025',
+      costCode: '002',
+      costCodeName: 'Materials Purchase',
+      description: 'Cement bags',
+      payeeOrPayer: 'Local Supplier',
+      gstNo: 'GSTIN123456789',
+      billNo: 'B-101',
+      grossValue: 50000,
+      grossValueTrend: 'down',
+      amount: 48000,
+    }, {
+    date: '15.05.2025',
+      costCode: '002',
+      costCodeName: 'Materials Purchase',
+      description: 'Cement bags',
+      payeeOrPayer: 'Local Supplier',
+      gstNo: 'GSTIN123456789',
+      billNo: 'B-101',
+      grossValue: 50000,
+      grossValueTrend: 'down',
+      amount: 48000,
+    }, {
+    date: '15.05.2025',
+      costCode: '002',
+      costCodeName: 'Materials Purchase',
+      description: 'Cement bags',
+      payeeOrPayer: 'Local Supplier',
+      gstNo: 'GSTIN123456789',
+      billNo: 'B-101',
+      grossValue: 50000,
+      grossValueTrend: 'down',
+      amount: 48000,
+    }, {
+    date: '15.05.2025',
+      costCode: '002',
+      costCodeName: 'Materials Purchase',
+      description: 'Cement bags',
+      payeeOrPayer: 'Local Supplier',
+      gstNo: 'GSTIN123456789',
+      billNo: 'B-101',
+      grossValue: 50000,
+      grossValueTrend: 'down',
+      amount: 48000,
+    }, {
+    date: '15.05.2025',
+      costCode: '002',
+      costCodeName: 'Materials Purchase',
+      description: 'Cement bags',
+      payeeOrPayer: 'Local Supplier',
+      gstNo: 'GSTIN123456789',
+      billNo: 'B-101',
+      grossValue: 50000,
+      grossValueTrend: 'down',
+      amount: 48000,
+    }, {
+    date: '15.05.2025',
+      costCode: '002',
+      costCodeName: 'Materials Purchase',
+      description: 'Cement bags',
+      payeeOrPayer: 'Local Supplier',
+      gstNo: 'GSTIN123456789',
+      billNo: 'B-101',
+      grossValue: 50000,
+      grossValueTrend: 'down',
+      amount: 48000,
+    }, {
+    date: '15.05.2025',
+      costCode: '002',
+      costCodeName: 'Materials Purchase',
+      description: 'Cement bags',
+      payeeOrPayer: 'Local Supplier',
+      gstNo: 'GSTIN123456789',
+      billNo: 'B-101',
+      grossValue: 50000,
+      grossValueTrend: 'down',
+      amount: 48000,
+    }, {
+    date: '15.05.2025',
       costCode: '002',
       costCodeName: 'Materials Purchase',
       description: 'Cement bags',
@@ -135,23 +219,20 @@ const PettyCashRegister = () => {
     <div className="space-y-4 px-2 sm:px-4 md:px-6 lg:px-8">
       <Breadcrumb items={breadcrumbItems} onBackRoute={handleBackRoute} />
 
-      {/* ✅ Table wrapper */}
-      <div className="w-full bg-white rounded-lg shadow-sm border border-gray-200 px-2 sm:px-4">
- 
-  <div className="w-full overflow-x-auto">
-    
-    <div className="min-w-[640px] md:min-w-[768px] lg:min-w-[1024px]">
-      <CustomTable
-        columns={columns}
-        data={paginatedData}
-        pagination
-        paginationServer={false}
-        paginationTotalRows={data.length}
-        paginationDefaultPage={currentPage}
-        paginationPerPage={rowsPerPage}
-        onChangePage={page => setCurrentPage(page)}
-      />
-    </div>
+     
+     <div className="w-full overflow-x-auto bg-white rounded-lg shadow-sm border border-gray-200">
+  
+  <div className="w-full min-w-[480px] sm:min-w-[640px] max-w-full">
+    <CustomTable
+      columns={columns}
+      data={paginatedData}
+      pagination
+      paginationServer={false}
+      paginationTotalRows={data.length}
+      paginationDefaultPage={currentPage}
+      paginationPerPage={rowsPerPage}
+      onChangePage={page => setCurrentPage(page)}
+    />
   </div>
 </div>
     </div>
