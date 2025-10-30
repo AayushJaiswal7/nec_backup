@@ -122,7 +122,7 @@ const ViewBOQ = () => {
 
   {/* --- Table Wrapper (scrollable on all screens) --- */}
 {/* --- Scrollable Table --- */}
-<div
+{/* <div
         className="
       w-full 
       lg:w-[100%] 
@@ -149,7 +149,7 @@ const ViewBOQ = () => {
           tableClassName="w-full border-collapse text-sm  table-auto"
           noDataMessage="No BOQ data to display."
         />
-      </div>
+      </div> */}
 
 
       {/* --- Fixed Bottom Tabs (Unchanged) --- */}
